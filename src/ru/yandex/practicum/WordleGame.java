@@ -27,6 +27,7 @@ public class WordleGame {
     private final Map<Character, Set<Integer>> possiblePositions; // возможные позиции для букв
 
     private static final int MAX_STEPS = 6;          // максимальное количество шагов
+    private static final int WORD_LENGTH = 5;
 
     // Конструктор игры
     public WordleGame(WordleDictionary dictionary, PrintWriter logger) {
@@ -55,7 +56,7 @@ public class WordleGame {
         String normalizedWord = WordleDictionary.normalizeWord(word);
 
         // Проверка длины
-        if (normalizedWord.length() != 5) {
+        if (normalizedWord.length() != WORD_LENGTH) {
             throw new RuntimeException("Слово должно быть из 5 букв");
         }
 

@@ -2,8 +2,6 @@ package ru.yandex.practicum;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -18,19 +16,15 @@ import java.util.stream.Collectors;
 public class WordleDictionary {
 
     private List<String> words;
-    private final Set<String> wordSet;
-    private final Random random;
 
     // Конструктор словаря
     public WordleDictionary(List<String> words) {
         this.words = new ArrayList<>(words);
-        this.wordSet = new HashSet<>(words);
-        this.random = new Random();
     }
 
     // Проверка наличия слова в словаре
     public boolean contains(String word) {
-        return wordSet.contains(word);
+        return words.contains(word);
     }
 
     // Получение случайного слова из словаря
@@ -38,6 +32,7 @@ public class WordleDictionary {
         if (words.isEmpty()) {
             throw new IllegalStateException("Словарь пуст");
         }
+        Random random = new Random();
         return words.get(random.nextInt(words.size()));
     }
 

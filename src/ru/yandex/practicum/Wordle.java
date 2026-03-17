@@ -20,6 +20,17 @@ public class Wordle {
     private static final String DICTIONARY_FILE = "words_ru.txt";
     private static final String LOG_FILE_PREFIX = "wordle_log_";
 
+    // Кастомное исключение
+    public static class LoadDictionaryException extends Exception {
+        public LoadDictionaryException(String message) {
+            super(message);
+        }
+
+        public LoadDictionaryException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
     public static void main(String[] args) {
         try {
             // Инициализация логгера
@@ -34,6 +45,16 @@ public class Wordle {
 
             // Создание и запуск игры
             playGame(dictionary);
+
+        } catch (LoadDictionaryException e) {
+            // Специфичная обработка ошибки загрузки словаря
+            String errorMessage = "Критическая ошибка: " + e.getMessage();
+            System.err.println(errorMessage);
+            if (logger != null) {
+                logger.println("ОШИБКА: " + errorMessage);
+                e.printStackTrace(logger);
+            }
+            System.exit(1);
 
         } catch (Exception e) {
             // Любая ошибка
@@ -63,15 +84,13 @@ public class Wordle {
     }
 
     // Загрузка словаря из файла
-    private static WordleDictionary loadDictionary(WordleDictionaryLoader loader) {
+    private static WordleDictionary loadDictionary(WordleDictionaryLoader loader)  throws LoadDictionaryException {
         try {
             WordleDictionary dictionary = loader.loadDictionary(DICTIONARY_FILE, 5);
             System.out.println("Словарь успешно загружен. Количество слов: " + dictionary.size());
             return dictionary;
         } catch (Exception e) {
-            System.err.println("Критическая ошибка: Не удалось загрузить словарь - " + e.getMessage());
-            System.exit(1);
-            return null; // никогда не выполнится
+            throw new LoadDictionaryException("Не удалось загрузить словарь: " + e.getMessage(), e);
         }
     }
 

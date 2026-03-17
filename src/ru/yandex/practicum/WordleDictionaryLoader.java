@@ -9,6 +9,7 @@ import java.util.List;
     на выходе должен быть класс WordleDictionary
  */
 public class WordleDictionaryLoader {
+    private static final int WORD_LENGTH = 5;
     private final PrintWriter logger;
 
     // Конструктор загрузчика
@@ -34,7 +35,7 @@ public class WordleDictionaryLoader {
                 String normalizedWord = WordleDictionary.normalizeWord(line);
 
                 // Добавляем только слова длиной 5 букв
-                if (normalizedWord.length() == 5) {
+                if (normalizedWord.length() == WORD_LENGTH) {
                     allWords.add(normalizedWord);
                 }
             }
